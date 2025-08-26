@@ -2,7 +2,7 @@ import textblob as tb
 import vaderSentiment as vader
 
 def get_user_sentiment(text):
-    tb_score = TextBlob(text).sentiment.polarity
+    tb_scores = tb.TextBlob(text).sentiment.polarity
     vader_analyser = vader.vaderSentiment.SentimentIntensityAnalyzer()
     v_scores = vader_analyser.polarity_scores(text)
     v_cscores = v_scores["compound"]
