@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
+import time
 import database as db
 import sentiment_model as sentiment
 
@@ -34,10 +34,11 @@ with tab1:
             score, label = sentiment.get_user_sentiment(user_text)
 
             db.insert_feedback(user_text, score, label)
-
-            st.success(f"Feedback submitted! Sentiment: **{label}** (Score: {score:.2f})")
             
+            st.success(f"Feedback submitted! Sentiment: **{label}** (Score: {score:.2f})")
+                            
             # Rerun the app to update the dashboard immediately
+            time.sleep(5)            
             st.rerun()
         except Exception as e:
             st.error(f"An error occurred: {e}")
