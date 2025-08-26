@@ -4,15 +4,17 @@ import sqlite3
 import datetime
 import os
 
-# Define the name of the database file
 DB_FILE = "feedback.db"
+
 
 def get_db_connection():
     conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row
     return conn
 
+
 def create_database():
+    print("Attempting to create database and table...")
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(
@@ -28,6 +30,8 @@ def create_database():
     )
     conn.commit()
     conn.close()
+    print("Database and table creation process completed.")
+
 
 def insert_feedback(text, score, label):
     conn = get_db_connection()
@@ -37,11 +41,12 @@ def insert_feedback(text, score, label):
         """
         INSERT INTO UserSentiment (text, sentiment_score, sentiment_label, timestamp)
         VALUES (?, ?, ?, ?)
-        """, 
+        """,
         (text, score, label, ts)
     )
     conn.commit()
     conn.close()
+
 
 def get_all_feedback():
     conn = get_db_connection()
@@ -50,7 +55,3 @@ def get_all_feedback():
     feedback_data = cursor.fetchall()
     conn.close()
     return feedback_data
-
-if not os.path.isfile(DB_FILE):
-    create_database()
-    print("Database and table created successfully!")
