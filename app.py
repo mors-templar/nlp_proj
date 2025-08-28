@@ -18,7 +18,7 @@ except Exception as e:
     st.stop()
 
 
-# --- Main Application with Tabs ---
+# Main Application with Tabs 
 
 tab1, tab2, tab3 = st.tabs(["Input Form", "Analytics Dashboard", "Raw Data"])
 
@@ -37,7 +37,7 @@ with tab1:
             
             st.success(f"Feedback submitted! Sentiment: **{label}** (Score: {score:.2f})")
                             
-            # Rerun the app to update the dashboard immediately
+            # Rerun with a delay to showcase result and to update the dashboard immediately
             time.sleep(5)            
             st.rerun()
         except Exception as e:
@@ -48,7 +48,7 @@ with tab2:
     st.write("This section shows real-time analytics of all submitted feedback.")
 
     try:
-        # Fetch all feedback data from the database
+        # Fetch all feedback data from the database for dashboard and raw tabs
         all_feedback = db.get_all_feedback()
         
         if not all_feedback:
@@ -56,7 +56,6 @@ with tab2:
         else:
             df = pd.DataFrame(all_feedback, columns=['id', 'text', 'sentiment_score', 'sentiment_label', 'timestamp'])
             
-            # Convert timestamp column to datetime objects
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             
             col1, col2 = st.columns(2)
@@ -66,7 +65,7 @@ with tab2:
                 positive_count = df[df['sentiment_label'] == 'Positive'].shape[0]
                 st.metric(label="Positive Feedback", value=positive_count)
 
-            # Create and display visualizations
+            # Create and display visualizations (pie char and bar chart)
             st.markdown("### Sentiment Distribution")
             sentiment_counts = df['sentiment_label'].value_counts().reset_index()
             fig = px.pie(
